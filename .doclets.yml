@@ -1,4 +1,4 @@
-dir: public/client.js
+dir: public
 
 packageJson: package.json
 
