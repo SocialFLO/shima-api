@@ -1,16 +1,22 @@
-
 $(function() {
   console.log('hello world2 :o');
   
-  class ShimaApi {
+  class DeviceApi {
     constructor(options) {
-      console.log(options);
       this._audioLevel = 0;
       this._buttonInput = [];
       this._lowPower = false;
       this._mode = '';
       this._touchpadInput = [];
       this._wearerHeading = 0;
+      
+      // provided delegate functions
+      this._onAudioLevelChanged = null;
+      this._onButtonInput = null;
+      this._onLowPowerChange = null;
+      this._onModeChanged = null;
+      this._onTouchpadInput = null;
+      this._onWearerHeadingChanged = null;
     }
     
     /**
@@ -18,7 +24,6 @@ $(function() {
     * @returns {number} The device audio level.
     **/
     get audioLevel() {
-      console.log('getting audio level');
       return this._audioLevel;
     }
     
@@ -63,51 +68,45 @@ $(function() {
     }
     
     /**
-    * Calls a provided function when the audio level changes,
-    * passing in audioLevel as a parameter.
+    * Registers a provided function to be called when the audio level changes.
     */
     onAudioLevelChanged(callback) {
-      callback(this.audioLevel);
+      this._onAudioLevelChanged = callback;
     }
     
     /**
-    * Calls a provided function when the button input changes,
-    * passing in buttonInput as a parameter.
+    * Registers a provided function to be called when the button input changes.
     */
     onButtonInput(callback) {
-      callback(this.buttonInput);
+      this._onButtonInput = callback;
     }
     
     /**
-    * Calls a provided function when the low power status changes,
-    * passing in lowPower as a parameter.
+    * Registers a provided function to be called when the low power status changes.
     */
     onLowPowerChange(callback) {
-      callback(this.lowPower);
+      this._onLowPowerChange = callback;
     }
     
     /**
-    * Calls a provided function when the mode changes,
-    * passing in mode as a parameter.
+    * Registers a provided function to be called when the mode changes.
     */
     onModeChanged(callback) {
-      callback(this.mode);
+      this._onModeChanged = callback;
     }
     
     /**
-    * Calls a provided function when the touchpad input changes,
-    * passing in touchpadInput as a parameter.
+    * Registers a provided function to be called when the touchpad input changes.
     */
     onTouchpadInput(callback) {
-      callback(this.touchpadInput);
+      this._onTouchpadInput = callback;
     }
     
     /**
-    * Calls a provided function when the wearer heading changes,
-    * passing in wearerHeading as a parameter.
+    * Registers a provided function to be called when the wearer heading changes.
     */
     onWearerHeadingChanged(callback) {
-      callback(this.wearerHeading);
+      this._onWearerHeadingChanged = callback;
     }
 
   }
@@ -180,7 +179,45 @@ $(function() {
     }
   }
   
-  var test = new ShimaApi('empty');
+  class UtilityClass extends DeviceApi {
+    constuctor(options) {
+      super(options);
+    }
+    
+    simulateOnAudioLevelChanged(level) {
+      this._onAudioLevelChanged(level);
+    }
+    
+    simulateOnButtonInput(buttonInput) {
+      this._onButtonInput(buttonInput);
+    }
+    
+    simulateOnLowPowerChange(isLowPower) {
+      this._onLowPowerChange(isLowPower);
+    }
+    
+    simulateOnModeChanged(mode) {
+      this._onModeChanged(mode);
+    }
+    
+    simulateOnTouchpadInput(inputArray) {
+      this._onTouchpadInput(inputArray);
+    }
+    
+    simulateOnWearerHeadingChanged(heading) {
+      this._onWearerHeadingChanged(heading);
+    }
+    
+    set audioLevel(value) {
+      this._audioLevel = value;
+    }
+    
+    set lowPower(value) {
+      this._lowPower = value;
+    }
+  }
+  
+  var test = new DeviceApi('empty');
   var level = test.audioLevel;
 
 });
