@@ -1,18 +1,11 @@
 <!-- This is a static file -->
 <!-- served from your routes in server.js -->
 
-<!-- You might want to try something fancier: -->
-<!-- html/nunjucks docs: https://mozilla.github.io/nunjucks/ -->
-<!-- pug: https://pugjs.org/ -->
-<!-- haml: http://haml.info/ -->
-<!-- hbs(handlebars): http://handlebarsjs.com/ -->
-
 <!DOCTYPE html>
 <html>
   <head>
     <title>LAFORGE Optical</title>
     <meta name="description" content="A cool thing made with Glitch">
-<!--     <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon"> -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,10 +13,13 @@
   </head>
   <body>
     <div class="app-container">
-      <eyewear-view id="js-eyewearView" class="shima-view">
-        <!-- Put your markup here -->
+      <div id="js-eyewearView" class="eyewear-view">
+        <eyewear-pane class="eyewear-pane">
+          <!-- Put your markup here -->
+          
+        </eyewear-pane>
         
-      </eyewear-view>
+      </div>
     </div>
     
     <!-- Your web-app is https, so your scripts need to be too -->
@@ -31,8 +27,5 @@
             integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
             crossorigin="anonymous"></script>
     <script src="/client.js"></script>
-    <script crossorigin src="https://unpkg.com/react@15/dist/react.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
-
   </body>
 </html>

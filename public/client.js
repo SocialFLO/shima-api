@@ -1,8 +1,36 @@
+// client-side js
+// run by the browser each time your view template is loaded
+
+// by default, you've got jQuery,
+// add other scripts at the bottom of index.html
+
 $(function() {
-  console.log('hello world2 :o');
-  
+  customElements.define('eyewear-pane', class extends HTMLElement {
+    constructor() {
+      super();
+
+      // Create shadow DOM for the component.
+      let shadowRoot = this.attachShadow({mode: 'open'});
+      shadowRoot.innerHTML = `
+        <slot></slot>
+        <slot>
+          <span>Your content will render here when you insert markup into the js-eyewearView tag.</span>
+        </slot>
+      `;
+    }
+    
+  });
+});
+
+
+  /**
+  * Class representing the api for interacting with the wearable device.
+  * You should regester your delegate functions by utilizing the provided method calls and passing your
+  * function as the sole argument. I.e. DeviceApi.onAudioLevelChanged(() => console.log('foo'));
+  */
   class DeviceApi {
-    constructor(options) {
+    constructor() {
+      // Private variables representing various device info.
       this._audioLevel = 0;
       this._buttonInput = [];
       this._lowPower = false;
@@ -10,7 +38,7 @@ $(function() {
       this._touchpadInput = [];
       this._wearerHeading = 0;
       
-      // provided delegate functions
+      // Dev provided delegate functions
       this._onAudioLevelChanged = null;
       this._onButtonInput = null;
       this._onLowPowerChange = null;
@@ -24,6 +52,7 @@ $(function() {
     * @returns {number} The device audio level.
     **/
     get audioLevel() {
+      console.log('getting audio');
       return this._audioLevel;
     }
     
@@ -108,9 +137,12 @@ $(function() {
     onWearerHeadingChanged(callback) {
       this._onWearerHeadingChanged = callback;
     }
-
   }
   
+  /**
+  * Class representing the api for interacting with the phone app.
+  * Provides various information about the user and device settings.
+  */
   class SocialFloApi {
     constructor(options) {
       this._brightness = 0;
@@ -179,45 +211,112 @@ $(function() {
     }
   }
   
+  /**
+  * Class that extends DeviceApi to provide methods allowing the developer to simulate the wearable device.
+  * You should regester your delegate functions as you would with the actual DeviceApi calss by utilizing the provided method calls and passing your
+  * function as the sole argument. I.e. UtilityClass.onAudioLevelChanged(() => console.log('foo'));
+  * Then you can simulate the device calling them via the provided simulation methods. I.e. UtilityClass.simulateOnAudioLevelChanged(level);
+  */
   class UtilityClass extends DeviceApi {
-    constuctor(options) {
+    constructor(options) {
       super(options);
     }
     
+    /**
+    * Call the onAudioLevelChanged function with the passed value.
+    * @param {number} level - The audio level.
+    */
     simulateOnAudioLevelChanged(level) {
       this._onAudioLevelChanged(level);
     }
     
+    /**
+    * Call the onButtonInput function with the passed value.
+    * @param {array} buttonInput - The pressed buttons.
+    */
     simulateOnButtonInput(buttonInput) {
       this._onButtonInput(buttonInput);
     }
     
+    /**
+    * Call the onLowPowerChange function with the passed value.
+    * @param {boolean} isLowPower - True if the device is in low power mode.
+    */
     simulateOnLowPowerChange(isLowPower) {
       this._onLowPowerChange(isLowPower);
     }
-    
+
+    /**
+    * Call the onModeChanged function with the passed value.
+    * @param {string} mode - True if the device is in low power mode.
+    */
     simulateOnModeChanged(mode) {
       this._onModeChanged(mode);
     }
     
+    /**
+    * Call the onTouchpadInput function with the passed value.
+    * @param {array} inputArray - The array representing touchpad input.
+    */
     simulateOnTouchpadInput(inputArray) {
       this._onTouchpadInput(inputArray);
     }
     
+    /**
+    * Call the onWearerHeadingChanged function with the passed value.
+    * @param {number} heading - The new device heading.
+    */
     simulateOnWearerHeadingChanged(heading) {
       this._onWearerHeadingChanged(heading);
     }
     
+    /**
+    * Set the device audio level. This method is only available on the simulated API.
+    * @param {number} value - The new device audio level.
+    */
     set audioLevel(value) {
       this._audioLevel = value;
     }
     
+    /**
+    * Set the last button input array. This method is only available on the simulated API.
+    * @param {array} value - The last device button input.
+    */
+    set buttonInput(value) {
+      this._buttonInput = value;
+    }
+    
+    /**
+    * Set the device low power mode. This method is only available on the simulated API.
+    * @param {boolean} value - True if the device is in low power mode.
+    */
     set lowPower(value) {
       this._lowPower = value;
     }
+    
+    /**
+    * Set the device mode. This method is only available on the simulated API.
+    * @param {string} value - The device mode.
+    */
+    set mode(value) {
+      this._mode = value;
+    }
+    
+    /**
+    * Set the last button input array. This method is only available on the simulated API.
+    * @param {array} value - The last device touchpad input.
+    */
+    set touchpadInput(value) {
+      this._touchpadInput = value;
+    }
+    
+    /**
+    * Set the last device wearer heading. This method is only available on the simulated API.
+    * @param {number} heading - The last device wearer heading.
+    */
+    set wearerHeading(value) {
+      this._wearerHeading = value;
+    }
   }
-  
-  var test = new DeviceApi('empty');
-  var level = test.audioLevel;
 
-});
+
