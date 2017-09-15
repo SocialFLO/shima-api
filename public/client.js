@@ -12,8 +12,7 @@ $(function() {
       // Create shadow DOM for the component.
       let shadowRoot = this.attachShadow({mode: 'open'});
       shadowRoot.innerHTML = `
-        <slot></slot>
-        <slot>
+        <slot id="devpane" name="devpane">
           <span>Your content will render here when you insert markup into the js-eyewearView tag.</span>
         </slot>
       `;
@@ -82,7 +81,7 @@ $(function() {
 
     /**
     * Returns the last device touchpad input.
-    * @returns {array} The last device touchpad input.
+    * @returns {string} The last device touchpad input.
     **/
     get touchpadInput() {
       return this._touchpadInput;
@@ -171,8 +170,8 @@ $(function() {
     }
     
     /**
-    * Returns the device [literally what is this].
-    * @returns {string} The device [something].
+    * Returns the unique device LARP number.
+    * @returns {string} The device LARP number.
     **/
     get larpNumber() {
       return this._larpNumber;
@@ -256,10 +255,12 @@ $(function() {
     
     /**
     * Call the onTouchpadInput function with the passed value.
-    * @param {array} inputArray - The array representing touchpad input.
+    * @param {string} inputString - The string representing touchpad input.
     */
-    simulateOnTouchpadInput(inputArray) {
-      this._onTouchpadInput(inputArray);
+    simulateOnTouchpadInput(inputString) {
+      const div = document.getElementById('js-eyewearView"');
+      
+      this._onTouchpadInput(inputString);
     }
     
     /**
