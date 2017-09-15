@@ -29,6 +29,7 @@ $(function() {
   */
   class DeviceApi {
     constructor() {
+      console.log('deviceapi');
       // Private variables representing various device info.
       this._audioLevel = 0;
       this._buttonInput = [];
@@ -212,7 +213,7 @@ $(function() {
   
   /**
   * Class that extends DeviceApi to provide methods allowing the developer to simulate the wearable device.
-  * You should regester your delegate functions as you would with the actual DeviceApi calss by utilizing the provided method calls and passing your
+  * You should register your delegate functions as you would with the actual DeviceApi calss by utilizing the provided method calls and passing your
   * function as the sole argument. I.e. UtilityClass.onAudioLevelChanged(() => console.log('foo'));
   * Then you can simulate the device calling them via the provided simulation methods. I.e. UtilityClass.simulateOnAudioLevelChanged(level);
   */
@@ -254,16 +255,20 @@ $(function() {
     }
     
     /**
-    * Call the onTouchpadInput function with the passed value.
+    * Call the onTouchpadInput function with the passed value. 
+    * Supported inputs include 'left swipe', 'right swipe' and 'back and forth swipe'. 
+    * For example, you can simulate a left swipe touchpad input by doing UtilityClass.simulateOnTouchpadInput('left swipe');
     * @param {string} inputString - The string representing touchpad input.
     */
     simulateOnTouchpadInput(inputString) {
-      const div = document.getElementById('js-eyewearView"');
-      div.className += ('simulateTouchInput');
-      this._onTouchpadInput(inputString);
+      const div = document.createElement('div');
+      const parent = document.getElementById('js-eyewearView');
+      div.className = ('simulateTouchInput');
+      parent.appendChild(div);
       setTimeout(() => {
-        div.className = '';
-      }, 5000);
+        parent.removeChild(div);
+      }, 3000);
+      this._onTouchpadInput(inputString);
     }
     
     /**
