@@ -30,3 +30,21 @@ body {
   height: 450px;
   padding: 20px 35px;
 }
+
+.simulateTouchInput {
+  animation: slideCircle 3s infinite;
+  background: url('https://cdn.glitch.com/ee5f60f9-5a06-44de-938e-e25a35f34346%2FSelector.png?1505444076373') no-repeat;
+  height: 55px;
+  position: absolute;
+  width: 55px;
+}
+
+@keyframes slideCircle {
+  from {
+    left: 85%;
+  }
+
+  to {
+    left: 100%;
+  }
+} 
