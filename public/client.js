@@ -105,6 +105,9 @@ $(function() {
     
     /**
     * Registers a provided function to be called when the button input changes.
+    * The function will be provided an array of strings indicating which buttons were pressed and a boolean which will be True
+    * if the buttons were held (as opposed to simply pressed).
+    * The buttons that can be pressed are: L1, L2, L3, R1, R2, R3.
     */
     onButtonInput(callback) {
       this._onButtonInput = callback;
@@ -126,6 +129,8 @@ $(function() {
     
     /**
     * Registers a provided function to be called when the touchpad input changes.
+    * This will be called with two arguments. The first being a swipe direction such as 'left swipe', 'right swipe', or 'back and forth swipe'.
+    * The second argument will be a pad number to specify which pad on the glasses the action came from.
     */
     onTouchpadInput(callback) {
       this._onTouchpadInput = callback;
@@ -231,11 +236,12 @@ $(function() {
     }
     
     /**
-    * Call the onButtonInput function with the passed value.
-    * @param {array} buttonInput - The pressed buttons.
+    * Call the onButtonInput function with the passed values.
+    * @param {array} buttonInput - Strings representing the pressed buttons. The buttons that can be pressed are: L1, L2, L3, R1, R2, R3.
+    * @param {boolean} buttonHeald - Whether the button(s) in question were held, as opposed to simply pressed.
     */
-    simulateOnButtonInput(buttonInput) {
-      this._onButtonInput(buttonInput);
+    simulateOnButtonInput(buttonInput, buttonHeld) {
+      this._onButtonInput(buttonInput, buttonHeld);
     }
     
     /**
@@ -256,11 +262,12 @@ $(function() {
     
     /**
     * Call the onTouchpadInput function with the passed value. 
-    * Supported inputs include 'left swipe', 'right swipe' and 'back and forth swipe'. 
+    * Supported araguments for the inputString include 'left swipe', 'right swipe' and 'back and forth swipe'. 
     * For example, you can simulate a left swipe touchpad input by doing UtilityClass.simulateOnTouchpadInput('left swipe');
     * @param {string} inputString - The string representing touchpad input.
+    * @param {number} padNumber - The pad number representing which pad on the glasses the action was made.
     */
-    simulateOnTouchpadInput(inputString) {
+    simulateOnTouchpadInput(inputString, padNumber) {
       const div = document.createElement('div');
       const parent = document.getElementById('js-eyewearView');
       div.className = ('simulateTouchInput');
@@ -268,7 +275,7 @@ $(function() {
       setTimeout(() => {
         parent.removeChild(div);
       }, 3000);
-      this._onTouchpadInput(inputString);
+      this._onTouchpadInput(inputString, padNumber);
     }
     
     /**
