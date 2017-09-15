@@ -259,8 +259,11 @@ $(function() {
     */
     simulateOnTouchpadInput(inputString) {
       const div = document.getElementById('js-eyewearView"');
-      
+      div.className += ('simulateTouchInput');
       this._onTouchpadInput(inputString);
+      setTimeout(() => {
+        div.className = '';
+      }, 5000);
     }
     
     /**
